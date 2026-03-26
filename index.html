@@ -461,13 +461,7 @@ function renderGrid(){
     card.onclick=()=>openModal(p);
     const bc=p.inStock?"in":"out", bl=p.inStock?T[lang].in:T[lang].out;
     const imgSrc="images/"+p.images[0];
-    card.innerHTML="<div class='card-img'>"
-      +"<img src='"+imgSrc+"' alt='"+esc(p.title)+"' loading='lazy' onerror='imgErr(this)'/>
-      +"<div class='no-img' style='display:none'>"+p.sku+"</div>"
-      +"<span class='badge "+bc+"'>"+bl+"</span></div>"
-      +"<div class='card-body'><p class='card-dept'>"+esc(p.department)+"</p>"
-      +"<p class='card-title'>"+esc(p.title)+"</p>"
-      +"<p class='card-sku'>SKU "+p.sku+"</p></div>";
+    card.innerHTML="<div class='card-img'><img src='"+imgSrc+"' alt='"+esc(p.title)+"' loading='lazy' onerror='imgErr(this)'/><div class='no-img' style='display:none'>"+p.sku+"</div><span class='badge "+bc+"'>"+bl+"</span></div><div class='card-body'><p class='card-dept'>"+esc(p.department)+"</p><p class='card-title'>"+esc(p.title)+"</p><p class='card-sku'>SKU "+p.sku+"</p></div>";
     grid.appendChild(card);
   });
 }
