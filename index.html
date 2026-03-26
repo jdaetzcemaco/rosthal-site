@@ -462,7 +462,7 @@ function renderGrid(){
     const bc=p.inStock?"in":"out", bl=p.inStock?T[lang].in:T[lang].out;
     const imgSrc="images/"+p.images[0];
     card.innerHTML="<div class='card-img'>"
-      +"<img src='"+imgSrc+"' alt='"+esc(p.title)+"' loading='lazy' onerror="this.style.display='none';this.nextSibling.style.display='flex'"/>"
+      +"<img src='"+imgSrc+"' alt='"+esc(p.title)+"' loading='lazy' onerror='imgErr(this)'/>
       +"<div class='no-img' style='display:none'>"+p.sku+"</div>"
       +"<span class='badge "+bc+"'>"+bl+"</span></div>"
       +"<div class='card-body'><p class='card-dept'>"+esc(p.department)+"</p>"
@@ -568,6 +568,8 @@ function setView(v){
 // ── UTILS ──
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 
+
+function imgErr(el){el.onerror=null;el.style.display='none';if(el.nextSibling)el.nextSibling.style.display='flex';}
 let st;
 document.getElementById("search-inp").addEventListener("input",()=>{clearTimeout(st);st=setTimeout(()=>{page=0;applyFilters();},260);});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal();if(drawerOpen)toggleDrawer();}});
