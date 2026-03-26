@@ -431,8 +431,12 @@ function renderGrid(){
     // image wrap
     const wrap=document.createElement("div");wrap.className="card-img";
     const img=document.createElement("img");
-    img.src="images/"+p.images[0];img.alt=p.title;img.loading="lazy";
-    img.addEventListener("error",function(){img.style.display="none";noImg.style.display="flex";});
+    img.alt=p.title;img.loading="lazy";
+    img.addEventListener("error",function(){
+      if(img.src.indexOf('.jpg')>-1){img.src=img.src.replace('.jpg','.png');}
+      else{img.style.display="none";noImg.style.display="flex";}
+    });
+    img.src="images/"+p.images[0]+".jpg";
     const noImg=document.createElement("div");noImg.className="no-img";noImg.style.display="none";noImg.textContent=p.sku;
     const badge=document.createElement("span");badge.className="badge "+(p.inStock?"in":"out");badge.textContent=p.inStock?T[lang].in:T[lang].out;
     wrap.appendChild(img);wrap.appendChild(noImg);wrap.appendChild(badge);
@@ -469,17 +473,17 @@ function openModal(p){
   av.textContent=p.inStock?T[lang].in:T[lang].out;
   av.className="m-avail "+(p.inStock?"in":"out");
   document.getElementById("m-desc").textContent=p.description||"";
-  const mImg=document.getElementById("m-img");mImg.src="images/"+p.images[0];mImg.alt=p.title;
+  const mImg=document.getElementById("m-img");mImg.alt=p.title;mImg.addEventListener("error",function(){if(mImg.src.indexOf(".jpg")>-1)mImg.src=mImg.src.replace(".jpg",".png");},{ once:true });mImg.src="images/"+p.images[0]+".jpg";
   const thumbs=document.getElementById("m-thumbs");thumbs.innerHTML="";
   if(p.images.length>1){
     p.images.forEach(function(img,i){
       const d=document.createElement("div");d.className="thumb"+(i===0?" active":"");
-      const ti=document.createElement("img");ti.src="images/"+img;ti.loading="lazy";
+      const ti=document.createElement("img");ti.loading="lazy";ti.addEventListener("error",function(){if(ti.src.indexOf(".jpg")>-1)ti.src=ti.src.replace(".jpg",".png");else d.style.display="none";},{once:true});ti.src="images/"+img+".jpg";
       ti.addEventListener("error",function(){d.style.display="none";});
       d.appendChild(ti);
       d.onclick=function(){
         mImg.style.opacity="0";
-        setTimeout(function(){mImg.src="images/"+img;mImg.style.opacity="1";},160);
+        setTimeout(function(){var ext=img.indexOf(".")===-1?".jpg":"";mImg.src="images/"+img+ext;mImg.style.opacity="1";},160);
         thumbs.querySelectorAll(".thumb").forEach(function(t){t.classList.remove("active");});
         d.classList.add("active");
       };
