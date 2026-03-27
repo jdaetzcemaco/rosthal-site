@@ -351,6 +351,17 @@ footer{background:var(--off);border-top:3px solid var(--black);padding:40px 56px
   .bento-row2 .bento-card{height:240px}
 }
 
+
+.notify-modal-btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:15px 24px;background:var(--light);color:var(--black);
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;border:2px solid var(--warm);
+  cursor:pointer;transition:all var(--tr);
+}
+.notify-modal-btn:hover{border-color:var(--black);background:var(--warm)}
+.notify-modal-btn.notified{background:var(--black);color:var(--white);border-color:var(--black)}
+.notify-modal-count{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--mid);text-align:center;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -454,6 +465,10 @@ footer{background:var(--off);border-top:3px solid var(--black);padding:40px 56px
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           Cómpralo en CEMACO
         </a>
+        <div id="m-notify-wrap" style="display:none;flex-direction:column;gap:8px">
+          <button id="m-notify-btn" class="notify-modal-btn">Avísame cuando llegue</button>
+          <span id="m-notify-count" class="notify-modal-count"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -537,12 +552,19 @@ function buildBento(){
     } else {
       // Out of stock dept — notify button with counter
       if(!notifyCounts[dept])notifyCounts[dept]=0;
-      const notifyWrap=document.createElement('div');notifyWrap.className='bento-notify-wrap';
+      // Ver productos button (always available)
+      const viewBtn=document.createElement('button');viewBtn.className='bento-btn-cat';viewBtn.textContent='Ver productos';
+      viewBtn.onclick=(e)=>{e.stopPropagation();filterDept(dept);document.querySelector('.content').scrollIntoView({behavior:'smooth'});};
+      actions.appendChild(viewBtn);
+      const count=document.createElement('span');count.className='bento-count';count.textContent=info.count+' productos';
+      actions.appendChild(count);
+      // Notify row below
+      const notifyWrap=document.createElement('div');notifyWrap.className='bento-notify-wrap';notifyWrap.style.marginTop='6px';
       const notifyBtn=document.createElement('button');
       notifyBtn.className='bento-notify-btn'+(notifyCounts[dept]>0?' notified':'');
-      notifyBtn.textContent=notifyCounts[dept]>0?'¡Avisaremos!':'Avísame cuando llegue';
+      notifyBtn.textContent=notifyCounts[dept]>0?'¡Avisaremos!':'¿Quieres verlo de regreso?';
       const notifyCount=document.createElement('span');notifyCount.className='bento-notify-count';
-      if(notifyCounts[dept]>0)notifyCount.textContent=notifyCounts[dept]+' interesados';
+      if(notifyCounts[dept]>0)notifyCount.textContent=notifyCounts[dept]+' '+(notifyCounts[dept]===1?'interesado':'interesados');
       notifyBtn.onclick=(e)=>{
         e.stopPropagation();
         notifyCounts[dept]++;
@@ -557,10 +579,11 @@ function buildBento(){
     overlay.appendChild(deptLabel);overlay.appendChild(name);overlay.appendChild(actions);
     card.appendChild(imgWrap);card.appendChild(overlay);card.appendChild(eye);
 
-    // Card click → filter catalog
+    // Card click → always filter catalog (even out-of-stock depts have products)
     card.onclick=(e)=>{
       if(e.target.closest('.bento-eye')||e.target.closest('.bento-notify-btn'))return;
-      if(hasStock){filterDept(dept);document.querySelector('.content').scrollIntoView({behavior:'smooth'});}
+      filterDept(dept);
+      document.querySelector('.content').scrollIntoView({behavior:'smooth'});
     };
     return card;
   }
@@ -740,7 +763,35 @@ function openModal(p){
   if(p.dimensions&&p.dimensions!=="nan"&&p.dimensions){
     de.innerHTML="<strong>Dimensiones:</strong> "+p.dimensions;de.style.display="flex";
   }else de.style.display="none";
-  document.getElementById("m-cemaco").href=p.cemacoUrl;
+  // CEMACO button: show only if in stock
+  const cemacoBtn=document.getElementById("m-cemaco");
+  const notifyWrap=document.getElementById("m-notify-wrap");
+  if(p.inStock){
+    cemacoBtn.style.display="flex";
+    cemacoBtn.href=p.cemacoUrl;
+    if(notifyWrap)notifyWrap.style.display="none";
+  } else {
+    cemacoBtn.style.display="none";
+    if(notifyWrap){
+      notifyWrap.style.display="flex";
+      if(!window._nc)window._nc={};
+      const key="modal-"+p.sku;
+      const nb=document.getElementById("m-notify-btn");
+      const nc=document.getElementById("m-notify-count");
+      if(window._nc[key]){
+        nb.textContent="\u00a1Avisaremos!";nb.classList.add("notified");
+        nc.textContent=window._nc[key]+" "+(window._nc[key]===1?"interesado":"interesados");
+      } else {
+        nb.textContent="Av\u00edsame cuando llegue";nb.classList.remove("notified");nc.textContent="";
+      }
+      nb.onclick=function(){
+        if(!window._nc[key])window._nc[key]=0;
+        window._nc[key]++;
+        nb.textContent="\u00a1Avisaremos!";nb.classList.add("notified");
+        nc.textContent=window._nc[key]+" "+(window._nc[key]===1?"interesado":"interesados");
+      };
+    }
+  }
   document.getElementById("overlay").classList.add("open");
   document.body.style.overflow="hidden";
 }
