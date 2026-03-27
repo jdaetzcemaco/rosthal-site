@@ -362,6 +362,10 @@ footer{background:var(--off);border-top:3px solid var(--black);padding:40px 56px
 .notify-modal-btn:hover{border-color:var(--black);background:var(--warm)}
 .notify-modal-btn.notified{background:var(--black);color:var(--white);border-color:var(--black)}
 .notify-modal-count{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--mid);text-align:center;text-transform:uppercase}
+
+.notify-modal-btn:disabled,.bento-notify-btn:disabled{
+  opacity:.7;cursor:default;pointer-events:none;
+}
 </style>
 </head>
 <body>
@@ -567,10 +571,12 @@ function buildBento(){
       if(notifyCounts[dept]>0)notifyCount.textContent=notifyCounts[dept]+' '+(notifyCounts[dept]===1?'interesado':'interesados');
       notifyBtn.onclick=(e)=>{
         e.stopPropagation();
+        if(notifyBtn.disabled)return;
+        notifyBtn.disabled=true;
         notifyCounts[dept]++;
         notifyBtn.textContent='¡Avisaremos!';
         notifyBtn.classList.add('notified');
-        notifyCount.textContent=notifyCounts[dept]+' '+(notifyCounts[dept]===1?'interesado':'interesados');
+        notifyCount.textContent='Gracias, te avisaremos cuando est\u00e9 disponible';
       };
       notifyWrap.appendChild(notifyBtn);notifyWrap.appendChild(notifyCount);
       actions.appendChild(notifyWrap);
@@ -785,10 +791,12 @@ function openModal(p){
         nb.textContent="Av\u00edsame cuando llegue";nb.classList.remove("notified");nc.textContent="";
       }
       nb.onclick=function(){
+        if(nb.disabled)return;
+        nb.disabled=true;
         if(!window._nc[key])window._nc[key]=0;
         window._nc[key]++;
         nb.textContent="\u00a1Avisaremos!";nb.classList.add("notified");
-        nc.textContent=window._nc[key]+" "+(window._nc[key]===1?"interesado":"interesados");
+        nc.textContent="Gracias, te avisaremos cuando est\u00e9 disponible";
       };
     }
   }
