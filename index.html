@@ -277,38 +277,80 @@ footer{background:var(--off);border-top:3px solid var(--black);padding:40px 56px
   header,.cat-nav-inner{padding-left:28px;padding-right:28px}
 }
 
+
 /* ━━ BENTO HOME ━━ */
 .bento-section{background:var(--off);padding:0 40px 48px;max-width:1440px;margin:0 auto}
 .bento-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--mid);padding:32px 0 16px;display:flex;align-items:center;gap:12px}
 .bento-title::before{content:'';display:block;width:24px;height:2px;background:var(--red)}
-.bento-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto;gap:12px}
+
+/* Row 1: large + medium */
+.bento-row1{display:grid;grid-template-columns:5fr 4fr;gap:12px;margin-bottom:12px}
+/* Row 2: three equal */
+.bento-row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
 .bento-card{position:relative;overflow:hidden;cursor:pointer;background:var(--white);border:2px solid var(--warm);transition:all .25s cubic-bezier(.4,0,.2,1)}
 .bento-card:hover{border-color:var(--black);box-shadow:0 12px 48px rgba(0,0,0,.14);transform:translateY(-2px)}
-.bento-card--lg{grid-column:span 5;grid-row:span 2;min-height:480px}
-.bento-card--md{grid-column:span 4;grid-row:span 1;min-height:230px}
-.bento-card--sm{grid-column:span 3;grid-row:span 1;min-height:230px}
-.bento-img{width:100%;height:100%;object-fit:contain;padding:24px;transition:transform .4s ease;display:block}
-.bento-card:hover .bento-img{transform:scale(1.04)}
-.bento-img-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--light)}
-.bento-overlay{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.3) 60%,transparent 100%)}
-.bento-dept{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
-.bento-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;text-transform:uppercase;color:var(--white);line-height:1.1;margin-bottom:8px}
-.bento-card--lg .bento-name{font-size:26px}
-.bento-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.bento-btn-cat{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;background:var(--red);color:var(--white);border:none;cursor:pointer;transition:background .2s;white-space:nowrap}
+.bento-row1 .bento-card{height:440px}
+.bento-row2 .bento-card{height:280px}
+
+.bento-img-wrap{position:absolute;inset:0;background:var(--light);display:flex;align-items:center;justify-content:center}
+.bento-img{max-width:80%;max-height:80%;object-fit:contain;transition:transform .4s ease;display:block}
+.bento-card:hover .bento-img{transform:scale(1.05)}
+
+/* Overlay - lighter gradient, only bottom 40% */
+.bento-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:20px 20px 18px;
+  background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.45) 50%,transparent 100%);
+}
+.bento-dept{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:3px}
+.bento-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;text-transform:uppercase;color:var(--white);line-height:1;margin-bottom:10px}
+.bento-row1 .bento-card:first-child .bento-name{font-size:28px}
+.bento-actions{display:flex;align-items:center;gap:10px}
+.bento-btn-cat{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;background:var(--red);color:var(--white);border:none;cursor:pointer;transition:background .2s}
 .bento-btn-cat:hover{background:var(--red-dark)}
 .bento-count{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;color:rgba(255,255,255,.5);text-transform:uppercase}
-.bento-prod-btn{position:absolute;top:10px;right:10px;width:32px;height:32px;background:rgba(0,0,0,.55);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;color:white;font-size:14px}
-.bento-prod-btn:hover{background:var(--red)}
+
+/* Eye button */
+.bento-eye{
+  position:absolute;top:10px;right:10px;
+  width:34px;height:34px;
+  background:rgba(255,255,255,.9);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;color:var(--black);
+  border-radius:50%;
+  opacity:0;
+}
+.bento-card:hover .bento-eye{opacity:1}
+.bento-eye:hover{background:var(--red);color:var(--white);transform:scale(1.1)}
+
+/* Notify button for out-of-stock */
+.bento-notify-wrap{display:flex;align-items:center;gap:8px}
+.bento-notify-btn{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:6px 14px;background:transparent;
+  color:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.4);
+  cursor:pointer;transition:all .2s;
+}
+.bento-notify-btn:hover{border-color:var(--white);color:var(--white)}
+.bento-notify-btn.notified{background:rgba(255,255,255,.15);color:var(--white);border-color:rgba(255,255,255,.6)}
+.bento-notify-count{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.5px}
+
 @media(max-width:768px){
   .bento-section{padding:0 16px 36px}
-  .bento-grid{grid-template-columns:1fr 1fr;gap:8px}
-  .bento-card--lg,.bento-card--md,.bento-card--sm{grid-column:span 1;grid-row:span 1;min-height:200px}
-  .bento-card:nth-child(1){grid-column:span 2;min-height:260px}
+  .bento-row1{grid-template-columns:1fr;gap:8px}
+  .bento-row2{grid-template-columns:1fr 1fr;gap:8px}
+  .bento-row1 .bento-card{height:260px}
+  .bento-row2 .bento-card{height:200px}
+  .bento-eye{opacity:1}
 }
 @media(min-width:769px) and (max-width:1100px){
   .bento-section{padding:0 28px 40px}
+  .bento-row1 .bento-card{height:360px}
+  .bento-row2 .bento-card{height:240px}
 }
+
 </style>
 </head>
 <body>
@@ -360,8 +402,10 @@ footer{background:var(--off);border-top:3px solid var(--black);padding:40px 56px
 <!-- BENTO HOME -->
 <div class="bento-section" id="bento-home">
   <p class="bento-title">Explora nuestras categorías</p>
-  <div class="bento-grid" id="bento-grid"></div>
+  <div class="bento-row1" id="bento-row1"></div>
+  <div class="bento-row2" id="bento-row2"></div>
 </div>
+
 
 <div class="content">
   <div class="toolbar">
@@ -432,81 +476,99 @@ const PAGE_SIZE=48;
 let PRODUCTS=[],dept="all",filtered=[],view="grid",page=0,drawerOpen=false;
 
 
-function buildBento(){
-  const grid=document.getElementById('bento-grid');
-  if(!grid||!PRODUCTS.length)return;
-  grid.innerHTML='';
 
-  // Get departments with counts and featured product
+// Notify counters (session memory)
+const notifyCounts={};
+
+function buildBento(){
+  const row1=document.getElementById('bento-row1');
+  const row2=document.getElementById('bento-row2');
+  if(!row1||!row2||!PRODUCTS.length)return;
+  row1.innerHTML='';row2.innerHTML='';
+
+  // Build dept map
   const deptMap={};
   PRODUCTS.forEach(p=>{
-    if(!deptMap[p.department])deptMap[p.department]={count:0,featured:null};
+    if(!deptMap[p.department])deptMap[p.department]={count:0,inStockCount:0,featured:null};
     deptMap[p.department].count++;
-    if(!deptMap[p.department].featured&&p.inStock)deptMap[p.department].featured=p;
+    if(p.inStock){
+      deptMap[p.department].inStockCount++;
+      if(!deptMap[p.department].featured)deptMap[p.department].featured=p;
+    }
   });
-  // fallback: use first product if none in stock
-  PRODUCTS.forEach(p=>{
-    if(!deptMap[p.department].featured)deptMap[p.department].featured=p;
-  });
+  // fallback featured
+  PRODUCTS.forEach(p=>{if(!deptMap[p.department].featured)deptMap[p.department].featured=p;});
 
   const sorted=Object.entries(deptMap).sort((a,b)=>b[1].count-a[1].count);
+  // Row 1: top 2 by count | Row 2: remaining 3
+  const row1depts=sorted.slice(0,2);
+  const row2depts=sorted.slice(2);
 
-  // Size classes: largest dept = lg, next two = md, rest = sm
-  const sizes=['bento-card--lg','bento-card--md','bento-card--md','bento-card--sm','bento-card--sm'];
-
-  sorted.forEach(([dept,info],i)=>{
+  function makeCard(dept,info){
     const p=info.featured;
-    if(!p)return;
-    const sizeClass=sizes[i]||'bento-card--sm';
+    if(!p)return null;
+    const hasStock=info.inStockCount>0;
     const card=document.createElement('div');
-    card.className='bento-card '+sizeClass;
+    card.className='bento-card';
 
-    // Image wrap
-    const imgWrap=document.createElement('div');
-    imgWrap.className='bento-img-wrap';
-    const img=document.createElement('img');
-    img.className='bento-img';img.alt=p.title;img.loading='lazy';
+    // Image
+    const imgWrap=document.createElement('div');imgWrap.className='bento-img-wrap';
+    const img=document.createElement('img');img.className='bento-img';img.alt=p.title;img.loading='lazy';
     tryImg(img,p.images[0],()=>{img.style.display='none';});
     imgWrap.appendChild(img);
 
+    // Eye button
+    const eye=document.createElement('button');
+    eye.className='bento-eye';eye.title='Ver producto';
+    eye.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    eye.onclick=(e)=>{e.stopPropagation();openModal(p);};
+
     // Overlay
-    const overlay=document.createElement('div');
-    overlay.className='bento-overlay';
-    overlay.innerHTML='<p class="bento-dept">'+dept+'</p>'
-      +'<p class="bento-name">'+dept+'</p>'
-      +'<div class="bento-actions">'
-      +'<button class="bento-btn-cat" data-dept="'+dept+'">Ver colección</button>'
-      +'<span class="bento-count">'+info.count+' productos</span>'
-      +'</div>';
+    const overlay=document.createElement('div');overlay.className='bento-overlay';
+    const deptLabel=document.createElement('p');deptLabel.className='bento-dept';deptLabel.textContent=dept;
+    const name=document.createElement('p');name.className='bento-name';name.textContent=dept;
+    const actions=document.createElement('div');actions.className='bento-actions';
 
-    // Product quick-view button
-    const qvBtn=document.createElement('button');
-    qvBtn.className='bento-prod-btn';
-    qvBtn.title='Ver producto';
-    qvBtn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>';
-    qvBtn.onclick=(e)=>{e.stopPropagation();openModal(p);};
+    if(hasStock){
+      const btn=document.createElement('button');btn.className='bento-btn-cat';btn.textContent='Ver colección';
+      btn.onclick=(e)=>{e.stopPropagation();filterDept(dept);document.querySelector('.content').scrollIntoView({behavior:'smooth'});};
+      const count=document.createElement('span');count.className='bento-count';count.textContent=info.count+' productos';
+      actions.appendChild(btn);actions.appendChild(count);
+    } else {
+      // Out of stock dept — notify button with counter
+      if(!notifyCounts[dept])notifyCounts[dept]=0;
+      const notifyWrap=document.createElement('div');notifyWrap.className='bento-notify-wrap';
+      const notifyBtn=document.createElement('button');
+      notifyBtn.className='bento-notify-btn'+(notifyCounts[dept]>0?' notified':'');
+      notifyBtn.textContent=notifyCounts[dept]>0?'¡Avisaremos!':'Avísame cuando llegue';
+      const notifyCount=document.createElement('span');notifyCount.className='bento-notify-count';
+      if(notifyCounts[dept]>0)notifyCount.textContent=notifyCounts[dept]+' interesados';
+      notifyBtn.onclick=(e)=>{
+        e.stopPropagation();
+        notifyCounts[dept]++;
+        notifyBtn.textContent='¡Avisaremos!';
+        notifyBtn.classList.add('notified');
+        notifyCount.textContent=notifyCounts[dept]+' '+(notifyCounts[dept]===1?'interesado':'interesados');
+      };
+      notifyWrap.appendChild(notifyBtn);notifyWrap.appendChild(notifyCount);
+      actions.appendChild(notifyWrap);
+    }
 
-    card.appendChild(imgWrap);
-    card.appendChild(overlay);
-    card.appendChild(qvBtn);
+    overlay.appendChild(deptLabel);overlay.appendChild(name);overlay.appendChild(actions);
+    card.appendChild(imgWrap);card.appendChild(overlay);card.appendChild(eye);
 
-    // Click on card goes to catalog filtered
+    // Card click → filter catalog
     card.onclick=(e)=>{
-      if(e.target.closest('.bento-prod-btn'))return;
-      filterDept(dept);
-      document.querySelector('.content').scrollIntoView({behavior:'smooth'});
+      if(e.target.closest('.bento-eye')||e.target.closest('.bento-notify-btn'))return;
+      if(hasStock){filterDept(dept);document.querySelector('.content').scrollIntoView({behavior:'smooth'});}
     };
+    return card;
+  }
 
-    // Category button click
-    card.querySelector('.bento-btn-cat').onclick=(e)=>{
-      e.stopPropagation();
-      filterDept(dept);
-      document.querySelector('.content').scrollIntoView({behavior:'smooth'});
-    };
-
-    grid.appendChild(card);
-  });
+  row1depts.forEach(([dept,info])=>{const c=makeCard(dept,info);if(c)row1.appendChild(c);});
+  row2depts.forEach(([dept,info])=>{const c=makeCard(dept,info);if(c)row2.appendChild(c);});
 }
+
 
 async function init(){
   showLoading();
