@@ -470,7 +470,7 @@ footer{background:var(--off);border-top:3px solid var(--black);padding:40px 56px
           Cómpralo en CEMACO
         </a>
         <div id="m-notify-wrap" style="display:none;flex-direction:column;gap:8px">
-          <button id="m-notify-btn" class="notify-modal-btn">Avísame cuando llegue</button>
+          <button id="m-notify-btn" class="notify-modal-btn">Lo quiero de regreso</button>
           <span id="m-notify-count" class="notify-modal-count"></span>
         </div>
       </div>
@@ -566,7 +566,7 @@ function buildBento(){
       const notifyWrap=document.createElement('div');notifyWrap.className='bento-notify-wrap';notifyWrap.style.marginTop='6px';
       const notifyBtn=document.createElement('button');
       notifyBtn.className='bento-notify-btn'+(notifyCounts[dept]>0?' notified':'');
-      notifyBtn.textContent=notifyCounts[dept]>0?'¡Avisaremos!':'¿Quieres verlo de regreso?';
+      notifyBtn.textContent=notifyCounts[dept]>0?'¡Avisaremos!':'Lo quiero de regreso';
       const notifyCount=document.createElement('span');notifyCount.className='bento-notify-count';
       if(notifyCounts[dept]>0)notifyCount.textContent=notifyCounts[dept]+' '+(notifyCounts[dept]===1?'interesado':'interesados');
       notifyBtn.onclick=(e)=>{
@@ -574,9 +574,9 @@ function buildBento(){
         if(notifyBtn.disabled)return;
         notifyBtn.disabled=true;
         notifyCounts[dept]++;
-        notifyBtn.textContent='¡Avisaremos!';
+        notifyBtn.textContent='¡Registrado!';
         notifyBtn.classList.add('notified');
-        notifyCount.textContent='Gracias, te avisaremos cuando est\u00e9 disponible';
+        notifyCount.textContent='Registrado — gracias por tu interés';
       };
       notifyWrap.appendChild(notifyBtn);notifyWrap.appendChild(notifyCount);
       actions.appendChild(notifyWrap);
@@ -788,7 +788,7 @@ function openModal(p){
         nb.textContent="\u00a1Avisaremos!";nb.classList.add("notified");
         nc.textContent=window._nc[key]+" "+(window._nc[key]===1?"interesado":"interesados");
       } else {
-        nb.textContent="Av\u00edsame cuando llegue";nb.classList.remove("notified");nc.textContent="";
+        nb.textContent="Lo quiero de regreso";nb.classList.remove("notified");nc.textContent="";
       }
       nb.onclick=function(){
         if(nb.disabled)return;
@@ -796,7 +796,7 @@ function openModal(p){
         if(!window._nc[key])window._nc[key]=0;
         window._nc[key]++;
         nb.textContent="\u00a1Avisaremos!";nb.classList.add("notified");
-        nc.textContent="Gracias, te avisaremos cuando est\u00e9 disponible";
+        nc.textContent="Registrado — gracias por tu interés";
       };
     }
   }
